@@ -1,0 +1,90 @@
+import streamlit as st
+
+# --- Constants ---
+v1 = 70123
+v2 = 33
+v3 = 3
+v4 = 28786
+VALID_ID = "Admin"
+VALID_PASSWORD = "9229"
+
+# --- Password Generator Logic ---
+def generate_password(a: int, b: int, mode: str) -> int:
+    result = 0
+    x = a + b + v1
+    buffer = [
+        (x & 0xFF000000) >> 24,
+        (x & 0x00FF0000) >> 16,
+        (x & 0x0000FF00) >> 8,
+        (x & 0x000000FF)
+    ]
+    for val in buffer:
+        result += val
+
+    if mode == "2-digit":
+        x = v2 * b
+        result ^= x
+        x = v3 * b
+        result += x
+    elif mode == "3-digit":
+        x = (v2 + 3) * b
+        result ^= x
+        x = (v3 + 1) * b
+        result += x
+
+    result ^= v4
+    return result
+
+# --- Login Logic ---
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if not st.session_state.logged_in:
+    st.title("🔐 Secure Login")
+
+    login_id = st.text_input("Login ID")
+    # Numeric-only trick (browser/mobile will use numeric keypad)
+    password = st.text_input("Password (numeric)", type="password", max_chars=6)
+
+    if st.button("Login"):
+        if login_id == VALID_ID and password == VALID_PASSWORD:
+            st.session_state.logged_in = True
+            st.rerun()
+        else:
+            st.error("❌ Invalid Login ID or Password")
+
+# --- Main App (After Login) ---
+else:
+    st.title("🔧 Dynamic Lock Generator")
+
+    machine_no = st.text_input("Enter Machine Number")
+    counter_no = st.text_input("Enter Counter Number")
+
+    def is_valid_number(s):
+        try:
+            int(s)
+            return True
+        except:
+            return False
+
+    if st.button("Generate 2-digit Lock"):
+        if not is_valid_number(machine_no) or not is_valid_number(counter_no):
+            st.error("Please enter valid numeric values for both fields.")
+        else:
+            a = int(machine_no)
+            b = int(counter_no)
+            result = generate_password(a, b, mode="2-digit")
+            st.success(f"2-digit Lock Code: {result}")
+
+    if st.button("Generate 3-digit Lock"):
+        if not is_valid_number(machine_no) or not is_valid_number(counter_no):
+            st.error("Please enter valid numeric values for both fields.")
+        else:
+            a = int(machine_no)
+            b = int(counter_no)
+            result = generate_password(a, b, mode="3-digit")
+            st.success(f"3-digit Lock Code: {result}")
+
+    if st.button("Logout 🔓"):
+        st.session_state.logged_in = False
+        st.experimental_rerun()
