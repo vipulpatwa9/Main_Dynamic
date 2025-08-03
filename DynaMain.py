@@ -67,7 +67,7 @@ else:
         except:
             return False
 
-    if st.button("Generate 2-digit Lock"):
+    if st.button(" 2-Digit "):
         if not is_valid_number(machine_no) or not is_valid_number(counter_no):
             st.error("Please enter valid numeric values for both fields.")
         else:
@@ -76,7 +76,7 @@ else:
             result = generate_password(a, b, mode="2-digit")
             st.success(f"2-digit Lock Code: {result}")
 
-    if st.button("Generate 3-digit Lock"):
+    if st.button("3-Digit "):
         if not is_valid_number(machine_no) or not is_valid_number(counter_no):
             st.error("Please enter valid numeric values for both fields.")
         else:
