@@ -57,8 +57,8 @@ if not st.session_state.logged_in:
 else:
     st.title("🔧 Dynamic Lock Generator")
 
-    machine_no = st.number_input("Enter Machine Number")
-    counter_no = st.number_input("Enter Counter Number")
+machine_no = st.number_input("Enter Machine Number", step=1, format="%d")
+counter_no = st.number_input("Enter Counter Number", step=1, format="%d")
 
     def is_valid_number(s):
         try:
@@ -87,6 +87,7 @@ else:
 
     if st.button("Logout 🔓"):
         st.session_state.logged_in = False
-        st.experimental_rerun()
+        st.rerun()
+
 
 
