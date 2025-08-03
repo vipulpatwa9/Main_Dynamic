@@ -44,7 +44,7 @@ if not st.session_state.logged_in:
 
     login_id = st.text_input("Login ID")
     # Numeric-only trick (browser/mobile will use numeric keypad)
-    password = st.text_input("Password (numeric)", type="password", max_chars=6)
+    password = st.number_input("Password", type="password", max_chars=6)
 
     if st.button("Login"):
         if login_id == VALID_ID and password == VALID_PASSWORD:
@@ -57,8 +57,8 @@ if not st.session_state.logged_in:
 else:
     st.title("🔧 Dynamic Lock Generator")
 
-    machine_no = st.text_input("Enter Machine Number")
-    counter_no = st.text_input("Enter Counter Number")
+    machine_no = st.number_input("Enter Machine Number")
+    counter_no = st.number_input("Enter Counter Number")
 
     def is_valid_number(s):
         try:
@@ -88,3 +88,4 @@ else:
     if st.button("Logout 🔓"):
         st.session_state.logged_in = False
         st.experimental_rerun()
+
