@@ -44,7 +44,7 @@ if not st.session_state.logged_in:
 
     login_id = st.text_input("Login ID")
     # Numeric-only trick (browser/mobile will use numeric keypad)
-    password = st.number_input("Password", type="password", max_chars=6)
+    password = st.text_input("Password", type="password", max_chars=6)
 
     if st.button("Login"):
         if login_id == VALID_ID and password == VALID_PASSWORD:
@@ -88,4 +88,5 @@ else:
     if st.button("Logout 🔓"):
         st.session_state.logged_in = False
         st.experimental_rerun()
+
 
